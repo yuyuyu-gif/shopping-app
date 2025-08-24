@@ -153,7 +153,7 @@ else:
     # enumerate()関数：リストの要素とインデックスを同時に取得
     # enumerate(st.session_state.shopping_list, 1)：インデックスを1から開始
     # これが今回の学習ポイントの1つ！
- for index, item in enumerate(filtered_list, 1):
+for index, item in enumerate(filtered_list, 1):
     col1, col2, col3, col4 = st.columns([0.1, 0.5, 0.2, 0.2])
 
     with col1:
@@ -178,6 +178,7 @@ else:
             if st.button("はい", key=f"confirm_yes_{index}"):
                 st.session_state.shopping_list.remove(item)
                 st.rerun()
+
  
 
 
@@ -206,6 +207,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
