@@ -73,7 +73,7 @@ st.header("📝 買い物リスト管理")  # メインのヘッダー
 user_options = ["ゆうと", "なつみ"]
 selected_user = st.selectbox("👤 あなたの名前を選択してください", user_options)
 #カテゴリの選択
-category_options = ["家電", "家具", "食器", "食品", "日用品", "その他"]
+category_options = ["ローテーブル", "椅子", "ソファ", "テレビ台", "冷蔵庫", "食器", "ダイニングテーブル", "洗濯機", "冷蔵庫"]
 selected_category = st.selectbox("📦 カテゴリを選択してください", category_options)
 
 # 新しいアイテムの入力
@@ -239,6 +239,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
