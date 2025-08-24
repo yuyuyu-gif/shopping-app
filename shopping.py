@@ -167,10 +167,13 @@ import pandas as pd
 
 # データフレームに変換
 df = pd.DataFrame(rows, columns=["アイテム", "追加者"])
+unique_users = df["追加者"].unique().tolist()
+selected_user = st.selectbox("👤 表示するユーザーを選択", ["すべて表示"] + unique_users)
 
+filtered_df = df if selected_user == "すべて表示" else df[df["追加者"] == selected_user]
 # Streamlitで表示
-st.subheader("🛒 現在の買い物リスト")
-st.dataframe(df)
+st.subheader(f"🛒 {selected_user} の買い物リスト" if selected_user != "すべて表示" else "🛒 全員の買い物リスト")
+st.dataframe(filtered_df)
 
 # ===== リストが空の場合のメッセージ =====
 if len(st.session_state.shopping_list) == 0:
@@ -224,6 +227,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
