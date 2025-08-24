@@ -41,6 +41,8 @@ if 'shopping_list' not in st.session_state:
 if 'clear_clicked' not in st.session_state:
     st.session_state.clear_clicked = False  # Falseで初期化
 
+if 'favorites' not in st.session_state:
+    st.session_state.favorites = []
 # ===== 基本的な使用例 =====
 # 辞書の場合
 my_dict = {"name": "John", "age": 25}
@@ -137,24 +139,29 @@ else:
     # enumerate()関数：リストの要素とインデックスを同時に取得
     # enumerate(st.session_state.shopping_list, 1)：インデックスを1から開始
     # これが今回の学習ポイントの1つ！
-    for index, item in enumerate(st.session_state.shopping_list, 1):
-        # 3つのカラムを作成（0.1:0.6:0.3の比率）
-        col1, col2, col3 = st.columns([0.1, 0.6, 0.3])
+   for index, item in enumerate(st.session_state.shopping_list, 1):
+    col1, col2, col3, col4 = st.columns([0.1, 0.5, 0.2, 0.2])
 
-        with col1:
-            st.write(f"**{index}.**")  # 番号を表示
+    with col1:
+        st.write(f"**{index}.**")
 
-        with col2:
-            st.write(item)  # アイテム名を表示
+    with col2:
+        st.write(item)
 
-        with col3:
-            # st.popover()：ポップオーバー（小さなポップアップ）を作成
-            with st.popover("🗑️ 削除", help=f"「{item}」を削除"):
-                st.write(f"「{item}」を削除しますか？")
-                if st.button("はい", key=f"confirm_yes_{index}"):
-                    # pop()メソッド：指定したインデックスの要素を削除
-                    st.session_state.shopping_list.pop(index - 1)
-                    st.rerun()  # ページを再読み込み
+    with col3:
+        fav_label = "⭐ お気に入り" if item not in st.session_state.favorites else "✅ 登録済み"
+        if st.button(fav_label, key=f"fav_{index}"):
+            if item not in st.session_state.favorites:
+                st.session_state.favorites.append(item)
+                st.rerun()
+
+    with col4:
+        with st.popover("🗑️ 削除", help=f"「{item}」を削除"):
+            st.write(f"「{item}」を削除しますか？")
+            if st.button("はい", key=f"confirm_yes_{index}"):
+                st.session_state.shopping_list.pop(index - 1)
+                st.rerun()
+
 
 
 # ===== リストの操作ボタン =====
@@ -181,6 +188,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
