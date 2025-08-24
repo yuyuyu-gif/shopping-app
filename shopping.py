@@ -129,7 +129,7 @@ if selected_user != "すべて表示":
 if selected_category != "すべて表示":
     filtered_df = filtered_df[filtered_df["カテゴリ"] == selected_category]
 st.subheader("🛒 絞り込み結果")
-st.dataframe(filtered_df)
+#st.dataframe(filtered_df)
 
 # ===== リストが空の場合のメッセージ =====
 if len(st.session_state.shopping_list) == 0:
@@ -191,6 +191,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
