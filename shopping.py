@@ -183,11 +183,15 @@ for index, item in enumerate(display_list, 1):
         if item.startswith("http"):
             url = item.split("（")[0].strip()
             meta = item.split("（")[1].replace("）", "")
-            category = meta.split(" /")[0]
-            user = meta.split("by ")[-1].split(" /")[0]
-            date = meta.split("/")[-1].strip()
+            parts = meta.split(", ")
+            
+            category = parts[0].replace("カテゴリ: ", "")
+            user = parts[1].replace("追加者: ", "")
+            date = parts[2].replace("日付: ", "")
+            
             st.markdown(f"[{url}]({url})")
-            st.caption(f"カテゴリ: {item['category']}　追加者: {item['user']}　追加日: {item['date']}")
+            st.caption(f"カテゴリ: {category}　追加者: {user}　追加日: {date}")
+
 
 
         else:
@@ -238,6 +242,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
