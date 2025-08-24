@@ -139,7 +139,7 @@ else:
     # enumerate()関数：リストの要素とインデックスを同時に取得
     # enumerate(st.session_state.shopping_list, 1)：インデックスを1から開始
     # これが今回の学習ポイントの1つ！
-   for index, item in enumerate(st.session_state.shopping_list, 1):
+  for index, item in enumerate(st.session_state.shopping_list, 1):
     col1, col2, col3, col4 = st.columns([0.1, 0.5, 0.2, 0.2])
 
     with col1:
@@ -149,9 +149,12 @@ else:
         st.write(item)
 
     with col3:
-        fav_label = "⭐ お気に入り" if item not in st.session_state.favorites else "✅ 登録済み"
-        if st.button(fav_label, key=f"fav_{index}"):
-            if item not in st.session_state.favorites:
+        if item in st.session_state.favorites:
+            if st.button("❌ お気に入り解除", key=f"unfav_{index}"):
+                st.session_state.favorites.remove(item)
+                st.rerun()
+        else:
+            if st.button("⭐ お気に入り", key=f"fav_{index}"):
                 st.session_state.favorites.append(item)
                 st.rerun()
 
@@ -188,6 +191,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
