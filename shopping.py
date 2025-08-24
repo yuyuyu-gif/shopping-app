@@ -160,14 +160,14 @@ if st.session_state.clear_clicked:
     st.session_state.clear_clicked = False  # フラグをリセット
 
 # ===== 買い物リストの表示 =====
-st.markdown("---")  # 区切り線
-# 2つのカラムを作成（3:1の比率）
-col1, col2 = st.columns([3, 1])
-with col1:
-    st.header("🛒 現在の買い物リスト")  # リストのヘッダー
-with col2:
-    # len()関数：リストの要素数を取得
-    st.metric("アイテム数", len(st.session_state.shopping_list))
+import pandas as pd
+
+# データフレームに変換
+df = pd.DataFrame(rows, columns=["アイテム", "追加者"])
+
+# Streamlitで表示
+st.subheader("🛒 現在の買い物リスト")
+st.dataframe(df)
 
 # ===== リストが空の場合のメッセージ =====
 if len(st.session_state.shopping_list) == 0:
@@ -221,6 +221,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
