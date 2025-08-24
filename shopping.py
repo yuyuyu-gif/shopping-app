@@ -159,6 +159,9 @@ if st.session_state.clear_clicked:
     # メッセージを表示したらフラグをリセット（ボタンが押されていない状態にする）
     st.session_state.clear_clicked = False  # フラグをリセット
 
+# Google Sheetsからデータ取得
+rows = sheet.get_all_values()
+
 # ===== 買い物リストの表示 =====
 import pandas as pd
 
@@ -221,6 +224,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
