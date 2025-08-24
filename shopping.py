@@ -84,11 +84,14 @@ new_item = st.text_input("アイテムのリンクを貼ってください:", pl
 # st.button()：ボタンを作成
 if st.button("➕ リストに追加"):
     if new_item and selected_category:
+        from datetime import datetime
+        added_date = datetime.now().strftime("%Y-%m-%d")
+        
         st.session_state.shopping_list.append(f"{new_item}（{selected_category} / by {selected_user}）")
         st.success(f"✅ '{new_item}' を追加（{selected_category} / {selected_user}）")
 
         try:
-            sheet.append_row([new_item, selected_user, selected_category])
+            sheet.append_row([new_item, selected_user, selected_category, added_date])
             st.info("📝 Google Sheetsにも保存しました！")
         except Exception as e:
             st.error(f"❌ Google Sheetsへの保存に失敗しました: {e}")
@@ -120,7 +123,7 @@ if "shopping_list" not in st.session_state:
 import pandas as pd
 
 # データフレームに変換
-df = pd.DataFrame(rows, columns=["アイテム", "追加者", "カテゴリ"])
+df = pd.DataFrame(rows, columns=["アイテム", "追加者", "カテゴリ", "日付"])
 # 追加者フィルター
 unique_users = df["追加者"].unique().tolist()
 selected_user = st.selectbox("👤 表示する追加者を選択", ["すべて表示"] + user_options)
@@ -181,10 +184,11 @@ for index, item in enumerate(display_list, 1):
             url = item.split("（")[0].strip()
             meta = item.split("（")[1].replace("）", "")
             category = meta.split(" /")[0]
-            user = meta.split("by ")[-1]
-            
-            label = f"{category} / {user}"
-            st.markdown(f"[{label}]({url})")
+            user = meta.split("by ")[-1].split(" /")[0]
+            date = meta.split("/")[-1].strip()
+            st.markdown(f"[{url}]({url})")
+            st.caption(f"カテゴリ: {category}　追加者: {user}　追加日: {date}")
+
 
         else:
             st.write(item)
@@ -234,6 +238,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
