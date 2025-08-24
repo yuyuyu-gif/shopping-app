@@ -19,15 +19,15 @@ client = gspread.authorize(creds)
 sheet = client.open_by_key("1G3eIkMW8rmrrKH9XzuRJb9Scek4MD4czE6TVpyDkHPM").worksheet("sheet1")
 # ページ設定
 st.set_page_config(
-    page_title="オーストラリア食材買い物メモ",  # ブラウザのタブに表示されるタイトル
-    page_icon="🦘",                            # ブラウザのタブに表示されるアイコン
+    page_title="同棲ほしいものリスト"  # ブラウザのタブに表示されるタイトル
+    page_icon="🏠",                            # ブラウザのタブに表示されるアイコン
     layout="wide"                              # レイアウトをワイドに設定
 )
 
 # タイトルと説明
-st.title("🦘 オーストラリア食材買い物メモ")  # メインタイトル
+st.title("🏠　同棲ほしいものリスト")  # メインタイトル
 st.markdown("---")  # 区切り線
-st.markdown("### オーストラリアの美味しい食材や商品をリストアップしよう！")  # サブタイトル
+st.markdown("### これいいと思った物をひたすら貼ってく！")  # サブタイトル
 
 
 
@@ -181,6 +181,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
