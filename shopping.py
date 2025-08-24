@@ -135,11 +135,25 @@ st.subheader("🛒 絞り込み結果")
 if len(st.session_state.shopping_list) == 0:
     st.info("📝 まだアイテムがありません。上記の入力欄からアイテムを追加してみましょう！")
 else:
+    
+    # ✅ この直前にフィルター処理を追加！
+    filtered_list = []
+    for item in st.session_state.shopping_list:
+        if "（" in item and " / by " in item:
+            name_part = item.split(" / by ")[-1].replace("）", "")
+            category_part = item.split("（")[1].split(" /")[0]
+
+            user_match = (selected_user == "すべて表示") or (name_part == selected_user)
+            category_match = (selected_category == "すべて表示") or (category_part == selected_category)
+
+            if user_match and category_match:
+                filtered_list.append(item)
+                
     # ===== for文を使ってリストの中身を順番に表示 =====
     # enumerate()関数：リストの要素とインデックスを同時に取得
     # enumerate(st.session_state.shopping_list, 1)：インデックスを1から開始
     # これが今回の学習ポイントの1つ！
-  for index, item in enumerate(st.session_state.shopping_list, 1):
+  for index, item in enumerate(filtered_list, 1):
     col1, col2, col3, col4 = st.columns([0.1, 0.5, 0.2, 0.2])
 
     with col1:
@@ -162,8 +176,9 @@ else:
         with st.popover("🗑️ 削除", help=f"「{item}」を削除"):
             st.write(f"「{item}」を削除しますか？")
             if st.button("はい", key=f"confirm_yes_{index}"):
-                st.session_state.shopping_list.pop(index - 1)
+                st.session_state.shopping_list.remove(item)
                 st.rerun()
+
 
 
 
@@ -191,6 +206,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
