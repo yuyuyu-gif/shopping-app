@@ -19,7 +19,7 @@ client = gspread.authorize(creds)
 sheet = client.open_by_key("1G3eIkMW8rmrrKH9XzuRJb9Scek4MD4czE6TVpyDkHPM").worksheet("sheet1")
 # ページ設定
 st.set_page_config(
-    page_title="同棲ほしいものリスト"  # ブラウザのタブに表示されるタイトル
+    page_title="同棲ほしいものリスト" , # ブラウザのタブに表示されるタイトル
     page_icon="🏠",                            # ブラウザのタブに表示されるアイコン
     layout="wide"                              # レイアウトをワイドに設定
 )
@@ -181,6 +181,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
