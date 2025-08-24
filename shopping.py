@@ -83,12 +83,12 @@ new_item = st.text_input("アイテムのリンクを貼ってください:", pl
 # ===== 追加ボタンの処理 =====
 # st.button()：ボタンを作成
 if st.button("➕ リストに追加"):
-    if selected_item and selected_category:
-        st.session_state.shopping_list.append(f"{selected_item}（{selected_category} / by {selected_user}）")
-        st.success(f"✅ '{selected_item}' を追加（{selected_category} / {selected_user}）")
+    if new_item and selected_category:
+        st.session_state.shopping_list.append(f"{new_item}（{selected_category} / by {selected_user}）")
+        st.success(f"✅ '{new_item}' を追加（{selected_category} / {selected_user}）")
 
         try:
-            sheet.append_row([selected_item, selected_user, selected_category])
+            sheet.append_row([new_item, selected_user, selected_category])
             st.info("📝 Google Sheetsにも保存しました！")
         except Exception as e:
             st.error(f"❌ Google Sheetsへの保存に失敗しました: {e}")
@@ -188,6 +188,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
