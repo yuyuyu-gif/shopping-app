@@ -107,6 +107,11 @@ if st.session_state.clear_clicked:
 # Google Sheetsからデータ取得
 rows = sheet.get_all_values()
 
+# ✅ セッション初期化の代わりに Sheets から復元
+if "shopping_list" not in st.session_state:
+    st.session_state.shopping_list = [
+        f"{row[0]}（{row[2]} / by {row[1]}）" for row in rows if len(row) >= 3
+    ]
 # ===== 買い物リストの表示 =====
 import pandas as pd
 
@@ -219,6 +224,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
