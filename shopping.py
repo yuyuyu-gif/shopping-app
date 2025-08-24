@@ -135,9 +135,9 @@ st.subheader("🛒 絞り込み結果")
 if len(st.session_state.shopping_list) == 0:
     st.info("📝 まだアイテムがありません。上記の入力欄からアイテムを追加してみましょう！")
 else:
-    
-    # ✅ この直前にフィルター処理を追加！
+
     filtered_list = []
+
     for item in st.session_state.shopping_list:
         if "（" in item and " / by " in item:
             name_part = item.split(" / by ")[-1].replace("）", "")
@@ -148,6 +148,8 @@ else:
 
             if user_match and category_match:
                 filtered_list.append(item)
+
+    
                 
     # ===== for文を使ってリストの中身を順番に表示 =====
     # enumerate()関数：リストの要素とインデックスを同時に取得
@@ -207,6 +209,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
