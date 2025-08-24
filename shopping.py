@@ -16,7 +16,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
 
 # スプレッドシートに接続（タイトルはGoogle Sheets上の名前と一致させる）
-sheet = client.open_by_key("1G3eIkMW8rmrrKH9XzuRJb9Scek4MD4czE6TVpyDkHPM").worksheet("Sheet1")
+sheet = client.open_by_key("1G3eIkMW8rmrrKH9XzuRJb9Scek4MD4czE6TVpyDkHPM").worksheet("sheet1")
 # ページ設定
 st.set_page_config(
     page_title="オーストラリア食材買い物メモ",  # ブラウザのタブに表示されるタイトル
@@ -218,3 +218,4 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
