@@ -118,6 +118,9 @@ st.header("📝 買い物リスト管理")  # メインのヘッダー
 
 # ユーザー名の入力欄（追加者の名前）
 user_name = st.text_input("あなたの名前を入力してください:", placeholder="例: 悠斗")
+#カテゴリの選択
+category_options = ["家電", "家具", "食器", "食品", "日用品", "その他"]
+selected_category = st.selectbox("📦 カテゴリを選択してください", category_options)
 
 # 新しいアイテムの入力
 # st.text_input()：テキスト入力欄を作成
@@ -126,20 +129,19 @@ new_item = st.text_input("新しいアイテムを入力してください:", pl
 # ===== 追加ボタンの処理 =====
 # st.button()：ボタンを作成
 if st.button("➕ リストに追加"):
-    if new_item.strip() and user_name.strip():
-        cleaned_item = new_item.strip()
+    if selected_item and user_name.strip() and selected_category:
         cleaned_user = user_name.strip()
-        st.session_state.shopping_list.append(f"{cleaned_item}（by {cleaned_user}）")
-        st.success(f"✅ '{cleaned_item}' を追加（{cleaned_user}）")
+        st.session_state.shopping_list.append(f"{selected_item}（{selected_category} / by {cleaned_user}）")
+        st.success(f"✅ '{selected_item}' を追加（{selected_category} / {cleaned_user}）")
 
-        # Google Sheetsに2列で保存
         try:
-            sheet.append_row([cleaned_item, cleaned_user])
+            sheet.append_row([selected_item, cleaned_user, selected_category])
             st.info("📝 Google Sheetsにも保存しました！")
         except Exception as e:
             st.error(f"❌ Google Sheetsへの保存に失敗しました: {e}")
     else:
-        st.warning("⚠️ アイテム名と名前の両方を入力してください。")
+        st.warning("⚠️ 名前・アイテム・カテゴリをすべて選択してください。")
+
 
 
 # ===== サンプルアイテムを追加するボタン =====
@@ -166,13 +168,24 @@ rows = sheet.get_all_values()
 import pandas as pd
 
 # データフレームに変換
-df = pd.DataFrame(rows, columns=["アイテム", "追加者"])
+df = pd.DataFrame(rows, columns=["アイテム", "追加者", "カテゴリ"])
+# 追加者フィルター
 unique_users = df["追加者"].unique().tolist()
-selected_user = st.selectbox("👤 表示するユーザーを選択", ["すべて表示"] + unique_users)
+selected_user = st.selectbox("👤 表示する追加者を選択", ["すべて表示"] + unique_users)
 
-filtered_df = df if selected_user == "すべて表示" else df[df["追加者"] == selected_user]
+# カテゴリフィルター
+unique_categories = df["カテゴリ"].unique().tolist()
+selected_category = st.selectbox("📦 表示するカテゴリを選択", ["すべて表示"] + unique_categories)
+
 # Streamlitで表示
-st.subheader(f"🛒 {selected_user} の買い物リスト" if selected_user != "すべて表示" else "🛒 全員の買い物リスト")
+filtered_df = df.copy()
+
+if selected_user != "すべて表示":
+    filtered_df = filtered_df[filtered_df["追加者"] == selected_user]
+
+if selected_category != "すべて表示":
+    filtered_df = filtered_df[filtered_df["カテゴリ"] == selected_category]
+st.subheader("🛒 絞り込み結果")
 st.dataframe(filtered_df)
 
 # ===== リストが空の場合のメッセージ =====
@@ -227,6 +240,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
