@@ -126,21 +126,21 @@ new_item = st.text_input("新しいアイテムを入力してください:", pl
 # ===== 追加ボタンの処理 =====
 # st.button()：ボタンを作成
 if st.button("➕ リストに追加"):
-    # strip()メソッド：文字列の前後の空白を削除
-    if new_item.strip():  # 空でない場合のみ追加
+    if new_item.strip() and user_name.strip():
         cleaned_item = new_item.strip()
-        # append()メソッド：リストの末尾に要素を追加
-        # これが今回の学習ポイントの1つ！
-        st.session_state.shopping_list.append(cleaned_item)
-        st.success(f"✅ '{cleaned_item}' をリストに追加しました！")
-# Google Sheetsに書き込み
+        cleaned_user = user_name.strip()
+        st.session_state.shopping_list.append(f"{cleaned_item}（by {cleaned_user}）")
+        st.success(f"✅ '{cleaned_item}' を追加（{cleaned_user}）")
+
+        # Google Sheetsに2列で保存
         try:
-            sheet.append_row([cleaned_item])
+            sheet.append_row([cleaned_item, cleaned_user])
             st.info("📝 Google Sheetsにも保存しました！")
         except Exception as e:
             st.error(f"❌ Google Sheetsへの保存に失敗しました: {e}")
     else:
-        st.warning("⚠️ アイテム名を入力してください。")
+        st.warning("⚠️ アイテム名と名前の両方を入力してください。")
+
 
 # ===== サンプルアイテムを追加するボタン =====
 if st.button("🎯 サンプル食材を追加"):
@@ -221,5 +221,6 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
