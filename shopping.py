@@ -187,7 +187,8 @@ for index, item in enumerate(display_list, 1):
             user = meta.split("by ")[-1].split(" /")[0]
             date = meta.split("/")[-1].strip()
             st.markdown(f"[{url}]({url})")
-            st.caption(f"カテゴリ: {category}　追加者: {user}　追加日: {date}")
+            st.caption(f"{new_item}（カテゴリ: {selected_category}, 追加者: {selected_user}, 日付: {added_date}）"
+)
 
 
         else:
@@ -238,6 +239,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
