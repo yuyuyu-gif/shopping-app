@@ -107,7 +107,7 @@ selected_category = st.selectbox("📦 カテゴリを選択してください",
 
 # 新しいアイテムの入力
 # st.text_input()：テキスト入力欄を作成
-new_item = st.text_input("新しいアイテムを入力してください:", placeholder="例: マヌカハニー")
+new_item = st.text_input("アイテムのリンクを貼ってください:", placeholder="URL")
 
 # ===== 追加ボタンの処理 =====
 # st.button()：ボタンを作成
@@ -212,6 +212,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
