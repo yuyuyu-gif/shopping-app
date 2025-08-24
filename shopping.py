@@ -120,6 +120,9 @@ selected_user = st.selectbox("👤 表示する追加者を選択", ["すべて�
 unique_categories = df["カテゴリ"].unique().tolist()
 selected_category = st.selectbox("📦 表示するカテゴリを選択", ["すべて表示"] + unique_categories)
 
+# ✅ お気に入り表示モードの切り替え
+show_favorites_only = st.checkbox("⭐ お気に入りだけ表示する", value=False)
+
 # Streamlitで表示
 filtered_df = df.copy()
 
@@ -150,12 +153,15 @@ else:
                 filtered_list.append(item)
 
     
-                
+    # ✅ ② お気に入り表示モードに応じて表示対象を切り替える
+    display_list = filtered_list if not show_favorites_only else [
+        item for item in filtered_list if item in st.session_state.favorites
+    ]            
     # ===== for文を使ってリストの中身を順番に表示 =====
     # enumerate()関数：リストの要素とインデックスを同時に取得
     # enumerate(st.session_state.shopping_list, 1)：インデックスを1から開始
     # これが今回の学習ポイントの1つ！
-for index, item in enumerate(filtered_list, 1):
+for index, item in enumerate(display_list, 1):
     col1, col2, col3, col4 = st.columns([0.1, 0.5, 0.2, 0.2])
 
     with col1:
@@ -209,6 +215,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
