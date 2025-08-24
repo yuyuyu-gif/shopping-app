@@ -117,7 +117,8 @@ with st.sidebar:  # サイドバーを作成
 st.header("📝 買い物リスト管理")  # メインのヘッダー
 
 # ユーザー名の入力欄（追加者の名前）
-user_name = st.text_input("あなたの名前を入力してください:", placeholder="例: 悠斗")
+user_options = ["ゆうと", "なつみ"]
+selected_user = st.selectbox("👤 あなたの名前を選択してください", user_options)
 #カテゴリの選択
 category_options = ["家電", "家具", "食器", "食品", "日用品", "その他"]
 selected_category = st.selectbox("📦 カテゴリを選択してください", category_options)
@@ -129,18 +130,17 @@ new_item = st.text_input("新しいアイテムを入力してください:", pl
 # ===== 追加ボタンの処理 =====
 # st.button()：ボタンを作成
 if st.button("➕ リストに追加"):
-    if selected_item and user_name.strip() and selected_category:
-        cleaned_user = user_name.strip()
-        st.session_state.shopping_list.append(f"{selected_item}（{selected_category} / by {cleaned_user}）")
-        st.success(f"✅ '{selected_item}' を追加（{selected_category} / {cleaned_user}）")
+    if selected_item and selected_category:
+        st.session_state.shopping_list.append(f"{selected_item}（{selected_category} / by {selected_user}）")
+        st.success(f"✅ '{selected_item}' を追加（{selected_category} / {selected_user}）")
 
         try:
-            sheet.append_row([selected_item, cleaned_user, selected_category])
+            sheet.append_row([selected_item, selected_user, selected_category])
             st.info("📝 Google Sheetsにも保存しました！")
         except Exception as e:
             st.error(f"❌ Google Sheetsへの保存に失敗しました: {e}")
     else:
-        st.warning("⚠️ 名前・アイテム・カテゴリをすべて選択してください。")
+        st.warning("⚠️ アイテムとカテゴリを選択してください。")
 
 
 
@@ -171,7 +171,7 @@ import pandas as pd
 df = pd.DataFrame(rows, columns=["アイテム", "追加者", "カテゴリ"])
 # 追加者フィルター
 unique_users = df["追加者"].unique().tolist()
-selected_user = st.selectbox("👤 表示する追加者を選択", ["すべて表示"] + unique_users)
+selected_user = st.selectbox("👤 表示する追加者を選択", ["すべて表示"] + user_options)
 
 # カテゴリフィルター
 unique_categories = df["カテゴリ"].unique().tolist()
@@ -240,6 +240,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
