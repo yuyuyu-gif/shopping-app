@@ -179,7 +179,7 @@ for index, item in enumerate(display_list, 1):
     with col2:
         if item.startswith("http"):
             url = item.split("（")[0].strip()
-            st.markdown(f"[リンクを開く]({url})")
+            st.markdown(f"[{selected_category}][リンクを開く]({url})")
         else:
             st.write(item)
 
@@ -228,6 +228,7 @@ if len(st.session_state.shopping_list) > 0:
             st.code(list_text)  # コードブロックとして表示
 
             st.info("上記のリストをコピーして使用してください！")
+
 
 
 
